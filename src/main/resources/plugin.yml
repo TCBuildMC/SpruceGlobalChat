@@ -1,0 +1,4 @@
+name: "CurtainGradleExamplePlugin"
+main: "xyz.tcbuildmc.minecraft.curtaingradle.example.ExamplePlugin"
+version: "1.0-SNAPSHOT"
+libraries: []

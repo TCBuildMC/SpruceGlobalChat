@@ -1,0 +1,46 @@
+buildscript {
+    repositories {
+        maven {
+            url = "https://jitpack.io/"
+        }
+        gradlePluginPortal()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "com.github.TCBuildMC:CurtainGradle:62d13b0d0e"
+    }
+}
+
+plugins {
+    id "java-library"
+}
+
+apply plugin: "xyz.tcbuildmc.minecraft.curtaingradle"
+
+group = 'xyz.tcbuildmc.minecraft.curtaingradle.example'
+version = '1.0-SNAPSHOT'
+
+curtainGradle {
+    metadata {
+        name "CurtainGradleExamplePlugin"
+        main "xyz.tcbuildmc.minecraft.curtaingradle.example.ExamplePlugin"
+        version "1.0-SNAPSHOT"
+    }
+}
+
+repositories {
+    curtainGradle.repositories.papermc()
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly curtainGradle.dependencies.spigotApi("1.20.6-R0.1-SNAPSHOT")
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
