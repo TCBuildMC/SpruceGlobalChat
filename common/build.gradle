@@ -1,0 +1,8 @@
+publishing {
+    publications {
+        create("MavenCommon", MavenPublication) {
+            from components.java
+            artifactId = project.archives_base_name
+        }
+    }
+}

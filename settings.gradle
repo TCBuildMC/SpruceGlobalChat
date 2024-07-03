@@ -1,1 +1,12 @@
-rootProject.name = 'CurtainGradle-Example-Plugin'
+def sgc_projects = [
+        "common",
+        "server",
+        "bungeecord",
+        "velocity"
+]
+
+rootProject.name = "SpruceGlobalChat"
+
+sgc_projects.forEach { p ->
+    include p
+}

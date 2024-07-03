@@ -1,0 +1,28 @@
+buildscript {
+    repositories {
+        maven {
+            url = "https://jitpack.io/"
+        }
+        gradlePluginPortal()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "com.github.TCBuildMC:CurtainGradle:1.0.1"
+    }
+}
+
+apply plugin: "xyz.tcbuildmc.minecraft.curtaingradle"
+
+dependencies {
+    api project(":common")
+}
+
+publishing {
+    publications {
+        create("MavenBungeeCord", MavenPublication) {
+            from components.java
+            artifactId = project.archives_base_name
+        }
+    }
+}

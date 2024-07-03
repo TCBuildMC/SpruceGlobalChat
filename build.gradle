@@ -1,46 +1,67 @@
-buildscript {
+plugins {
+    id "java-library"
+    id "maven-publish"
+}
+
+allprojects {
+    apply plugin: "java-library"
+
+    group = rootProject.maven_group
+    version = rootProject.release_version
+    base.archivesName = project.archives_base_name
+
     repositories {
-        maven {
-            url = "https://jitpack.io/"
-        }
-        gradlePluginPortal()
         mavenCentral()
     }
 
+    tasks.withType(JavaCompile).configureEach {
+        it.options.encoding = "UTF-8"
+        it.options.release = 8
+    }
+
+    tasks.withType(Test).configureEach {
+        it.systemProperty "file.encoding", "UTF-8"
+    }
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+
+        withSourcesJar()
+    }
+
+    jar {
+        manifest {
+            attributes "Implementation-Version": project.version
+        }
+    }
+
+    compileJava.dependsOn clean
+}
+
+subprojects {
     dependencies {
-        classpath "com.github.TCBuildMC:CurtainGradle:62d13b0d0e"
+        annotationProcessor(compileOnly("org.projectlombok:lombok:1.18.32"))
+
+        testImplementation platform('org.junit:junit-bom:5.10.3')
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+        testAnnotationProcessor(testCompileOnly("org.projectlombok:lombok:1.18.32"))
     }
-}
 
-plugins {
-    id "java-library"
-}
+    test {
+        useJUnitPlatform()
 
-apply plugin: "xyz.tcbuildmc.minecraft.curtaingradle"
+        ignoreFailures true
 
-group = 'xyz.tcbuildmc.minecraft.curtaingradle.example'
-version = '1.0-SNAPSHOT'
-
-curtainGradle {
-    metadata {
-        name "CurtainGradleExamplePlugin"
-        main "xyz.tcbuildmc.minecraft.curtaingradle.example.ExamplePlugin"
-        version "1.0-SNAPSHOT"
+        testLogging {
+            exceptionFormat = "full"
+            events "passed", "skipped", "failed"
+        }
     }
-}
 
-repositories {
-    curtainGradle.repositories.papermc()
-    mavenCentral()
-}
-
-dependencies {
-    compileOnly curtainGradle.dependencies.spigotApi("1.20.6-R0.1-SNAPSHOT")
-
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-}
-
-test {
-    useJUnitPlatform()
+    publishing {
+        repositories {
+            mavenLocal()
+        }
+    }
 }
