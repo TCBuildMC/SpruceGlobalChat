@@ -1,67 +1,87 @@
+buildscript {
+    repositories {
+        maven {
+            url = "https://jitpack.io/"
+        }
+        gradlePluginPortal()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "com.github.TCBuildMC:CurtainGradle:1.0.1"
+    }
+}
+
 plugins {
     id "java-library"
     id "maven-publish"
 }
 
-allprojects {
-    apply plugin: "java-library"
+group = rootProject.maven_group
+version = rootProject.release_version
+base.archivesName = project.archives_base_name
 
-    group = rootProject.maven_group
-    version = rootProject.release_version
-    base.archivesName = project.archives_base_name
+apply plugin: "xyz.tcbuildmc.minecraft.curtaingradle"
+
+repositories {
+    curtainGradle.repositories.papermc()
+    mavenCentral()
+}
+
+curtainGradle {
+    lang {
+        jdkVersion = 17
+    }
+}
+
+dependencies {
+    annotationProcessor(compileOnly("org.projectlombok:lombok:1.18.32"))
+    implementation "com.electronwill.night-config:toml:3.8.0"
+
+    testImplementation platform('org.junit:junit-bom:5.10.3')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testAnnotationProcessor(testCompileOnly("org.projectlombok:lombok:1.18.32"))
+
+    annotationProcessor(compileOnly(curtainGradle.dependencies.velocityApi("3.1.2-SNAPSHOT")))
+}
+
+test {
+    useJUnitPlatform()
+
+    ignoreFailures true
+
+    testLogging {
+        exceptionFormat = "full"
+        events "passed", "skipped", "failed"
+    }
+}
+
+tasks.withType(Test).configureEach {
+    it.systemProperty "file.encoding", "UTF-8"
+}
+
+java {
+    withSourcesJar()
+}
+
+jar {
+    manifest {
+        attributes "Implementation-Version": project.version
+    }
+}
+
+compileJava.dependsOn clean
+
+publishing {
+    publications {
+        create("MavenVelocity", MavenPublication) {
+            from components.java
+            artifactId = project.archives_base_name
+        }
+    }
 
     repositories {
-        mavenCentral()
-    }
-
-    tasks.withType(JavaCompile).configureEach {
-        it.options.encoding = "UTF-8"
-        it.options.release = 8
-    }
-
-    tasks.withType(Test).configureEach {
-        it.systemProperty "file.encoding", "UTF-8"
-    }
-
-    java {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-
-        withSourcesJar()
-    }
-
-    jar {
-        manifest {
-            attributes "Implementation-Version": project.version
-        }
-    }
-
-    compileJava.dependsOn clean
-}
-
-subprojects {
-    dependencies {
-        annotationProcessor(compileOnly("org.projectlombok:lombok:1.18.32"))
-
-        testImplementation platform('org.junit:junit-bom:5.10.3')
-        testImplementation 'org.junit.jupiter:junit-jupiter'
-        testAnnotationProcessor(testCompileOnly("org.projectlombok:lombok:1.18.32"))
-    }
-
-    test {
-        useJUnitPlatform()
-
-        ignoreFailures true
-
-        testLogging {
-            exceptionFormat = "full"
-            events "passed", "skipped", "failed"
-        }
-    }
-
-    publishing {
-        repositories {
-            mavenLocal()
-        }
+        mavenLocal()
     }
 }
+
