@@ -12,6 +12,7 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import xyz.tcbuildmc.minecraft.sgchat.command.Commands;
 import xyz.tcbuildmc.minecraft.sgchat.config.Config;
+import xyz.tcbuildmc.minecraft.sgchat.event.Listeners;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -25,8 +26,6 @@ import java.nio.file.Path;
         authors = {"TCBuildMC", "Block_Mrlimr267"}
 )
 public class SpruceGlobalChatPlugin {
-    public static SpruceGlobalChatPlugin instance;
-
     @Getter
     private final Logger logger;
 
@@ -45,13 +44,13 @@ public class SpruceGlobalChatPlugin {
         this.server = server;
         this.pluginData = pluginData.toFile();
         this.config = new Config(this.pluginData);
-        SpruceGlobalChatPlugin.instance = this;
     }
 
     @Subscribe
     public void onServerStart(ProxyInitializeEvent e) {
         this.config.load();
-        Commands.register(this.server);
+        Commands.register(this);
+        Listeners.register(this);
     }
 
     @Subscribe

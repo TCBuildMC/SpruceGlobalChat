@@ -9,28 +9,28 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import xyz.tcbuildmc.minecraft.sgchat.SpruceGlobalChatPlugin;
 
 public class Commands {
-    public static void register(final ProxyServer server) {
-        CommandManager manager = server.getCommandManager();
+    public static void register(SpruceGlobalChatPlugin plugin) {
+        CommandManager manager = plugin.getServer().getCommandManager();
 
-        LiteralCommandNode<CommandSource> say = GlobalSayCommand.register(server);
-        manager.register(getMeta(manager, say)
+        LiteralCommandNode<CommandSource> say = GlobalSayCommand.register(plugin.getServer());
+        manager.register(getMeta(plugin, manager, say)
                         .aliases("globaltell", "globalmsg")
                         .build(),
                 getCommand(say));
 
-        LiteralCommandNode<CommandSource> globalChat = GlobalChatCommand.register(SpruceGlobalChatPlugin.instance);
-        manager.register(getMeta(manager, globalChat)
+        LiteralCommandNode<CommandSource> globalChat = GlobalChatCommand.register(plugin);
+        manager.register(getMeta(plugin, manager, globalChat)
                         .aliases("sgc")
                         .build(),
                 getCommand(globalChat));
     }
 
-    public static CommandMeta.Builder getMeta(final CommandManager manager, final LiteralCommandNode<CommandSource> node) {
+    public static CommandMeta.Builder getMeta(SpruceGlobalChatPlugin plugin, CommandManager manager, LiteralCommandNode<CommandSource> node) {
         return manager.metaBuilder(node.getLiteral())
-                .plugin(SpruceGlobalChatPlugin.instance);
+                .plugin(plugin);
     }
 
-    public static BrigadierCommand getCommand(final LiteralCommandNode<CommandSource> node) {
+    public static BrigadierCommand getCommand(LiteralCommandNode<CommandSource> node) {
         return new BrigadierCommand(node);
     }
 }

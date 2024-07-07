@@ -11,7 +11,7 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.text.Component;
 
 public class GlobalSayCommand {
-    public static LiteralCommandNode<CommandSource> register(final ProxyServer server) {
+    public static LiteralCommandNode<CommandSource> register(ProxyServer server) {
         return LiteralArgumentBuilder.<CommandSource>literal("globalsay")
                 .requires(s -> s.hasPermission("sgc.command.say"))
                 .then(RequiredArgumentBuilder.<CommandSource, String>argument("content", StringArgumentType.greedyString())
