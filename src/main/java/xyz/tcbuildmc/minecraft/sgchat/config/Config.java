@@ -39,6 +39,16 @@ public class Config implements ConfigData {
     }
 
     @Override
+    public String getMessageFormat() {
+        return this.config.getOrElse("messageFormat", "[%s]<%s> %s");
+    }
+
+    @Override
+    public void setMessageFormat(String messageFormat) {
+        this.config.set("messageFormat", messageFormat);
+    }
+
+    @Override
     public boolean isPlayerStatusForwarding() {
         return this.config.getOrElse("playerStatusForwarding", true);
     }
@@ -49,12 +59,22 @@ public class Config implements ConfigData {
     }
 
     @Override
-    public String getMessageFormat() {
-        return this.config.getOrElse("messageFormat", "[%s]<%s> %s");
+    public String getJoinFormat() {
+        return this.config.getOrElse("joinFormat", "[%s] %s joined the server");
     }
 
     @Override
-    public void setMessageFormat(String messageFormat) {
-        this.config.set("messageFormat", messageFormat);
+    public void setJoinFormat(String joinFormat) {
+        this.config.set("joinFormat", joinFormat);
+    }
+
+    @Override
+    public String getLeaveFormat() {
+        return this.config.getOrElse("leaveFormat", "[%s] %s left the server");
+    }
+
+    @Override
+    public void setLeaveFormat(String leaveFormat) {
+        this.config.set("leaveFormat", leaveFormat);
     }
 }
