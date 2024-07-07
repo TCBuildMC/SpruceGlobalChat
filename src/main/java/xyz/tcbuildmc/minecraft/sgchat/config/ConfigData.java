@@ -1,11 +1,13 @@
 package xyz.tcbuildmc.minecraft.sgchat.config;
 
-public interface ConfigData {
-    boolean isMessageForwarding();
-    void setMessageForwarding(boolean messageForwarding);
+import java.util.List;
 
-    String getMessageFormat();
-    void setMessageFormat(String messageFormat);
+public interface ConfigData {
+    boolean isChatForwarding();
+    void setChatForwarding(boolean chatForwarding);
+
+    String getChatFormat();
+    void setChatFormat(String chatFormat);
 
     boolean isPlayerStatusForwarding();
     void setPlayerStatusForwarding(boolean playerStatusForwarding);
@@ -15,4 +17,10 @@ public interface ConfigData {
 
     String getLeaveFormat();
     void setLeaveFormat(String leaveFormat);
+
+    List<String> getExceptServers();
+    void setExceptServers(List<String> exceptServers);
+
+    List<String> getExceptPlayers();
+    void setExceptPlayers(List<String> exceptPlayers);
 }

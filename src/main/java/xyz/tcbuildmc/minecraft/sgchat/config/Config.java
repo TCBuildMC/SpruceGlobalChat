@@ -4,6 +4,7 @@ import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import lombok.Getter;
 
 import java.io.File;
+import java.util.List;
 
 @Getter
 public class Config implements ConfigData {
@@ -16,36 +17,41 @@ public class Config implements ConfigData {
                 .build();
     }
 
-    public void load() {
+    public final void load() {
         this.config.load();
     }
 
-    public void close() {
+    @Deprecated(forRemoval = true)
+    public final void save() {
+        this.config.save();
+    }
+
+    public final void close() {
         this.config.close();
     }
 
-    public void reload() {
+    public final void reload() {
         this.config.load();
     }
 
     @Override
-    public boolean isMessageForwarding() {
-        return this.config.getOrElse("messageForwarding", true);
+    public boolean isChatForwarding() {
+        return this.config.getOrElse("chatForwarding", true);
     }
 
     @Override
-    public void setMessageForwarding(boolean messageForwarding) {
-        this.config.set("messageForwarding", messageForwarding);
+    public void setChatForwarding(boolean chatForwarding) {
+        this.config.set("chatForwarding", chatForwarding);
     }
 
     @Override
-    public String getMessageFormat() {
-        return this.config.getOrElse("messageFormat", "[%s]<%s> %s");
+    public String getChatFormat() {
+        return this.config.getOrElse("chatFormat", "[%s]<%s> %s");
     }
 
     @Override
-    public void setMessageFormat(String messageFormat) {
-        this.config.set("messageFormat", messageFormat);
+    public void setChatFormat(String chatFormat) {
+        this.config.set("chatFormat", chatFormat);
     }
 
     @Override
@@ -76,5 +82,25 @@ public class Config implements ConfigData {
     @Override
     public void setLeaveFormat(String leaveFormat) {
         this.config.set("leaveFormat", leaveFormat);
+    }
+
+    @Override
+    public List<String> getExceptServers() {
+        return this.config.getOrElse("exceptServers", List.of());
+    }
+
+    @Override
+    public void setExceptServers(List<String> exceptServers) {
+        this.config.set("exceptServers", exceptServers);
+    }
+
+    @Override
+    public List<String> getExceptPlayers() {
+        return this.config.getOrElse("exceptPlayers", List.of());
+    }
+
+    @Override
+    public void setExceptPlayers(List<String> exceptPlayers) {
+        this.config.set("exceptPlayers", exceptPlayers);
     }
 }

@@ -1,15 +1,24 @@
 # Whether that the messages of all players will forward to other servers
 # 玩家消息转发
-messageForwarding = true
+chatForwarding = true
 
 # The format of the forwarding messages
-# 转发消息的格式
-messageFormat = "[%s]<%s> %s"
+# 消息格式
+chatFormat = "[%s]<%s> %s"
 
 # Whether that status of all players will forward to other servers
 # 玩家状态转发
 playerStatusForwarding = true
 
 # The format of the forwarding player statuses
+# 玩家状态格式
 joinFormat = "[%s] %s joined the server from %s"
 leaveFormat = "[%s] %s left the server"
+
+# A list of servers' name, and it will stop the messages forwarding to them
+# 转发排除服务器
+exceptServers = []
+
+# A list of players' name, and it will stop the messages forwarding to them
+# 转发排除玩家
+exceptPlayers = []

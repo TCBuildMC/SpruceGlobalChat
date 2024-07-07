@@ -20,7 +20,7 @@ import java.nio.file.Path;
 @Plugin(
         id = "spruceglobalchat",
         name = "SpruceGlobalChat",
-        version = "1.0.0-beta.2",
+        version = "1.0.0-beta.3",
         description = "A Velocity plugin.",
         url = "https://github.com/TCBuildMC/SpruceGlobalChat",
         authors = {"TCBuildMC", "Block_Mrlimr267"}

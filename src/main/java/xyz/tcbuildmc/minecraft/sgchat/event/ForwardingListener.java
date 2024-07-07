@@ -24,15 +24,18 @@ public class ForwardingListener {
 
     @Subscribe(order = PostOrder.FIRST)
     public void onPlayerChat(PlayerChatEvent e) {
-        if (this.config.isMessageForwarding()) {
+        if (this.config.isChatForwarding()) {
             String message = e.getMessage();
             Player player = e.getPlayer();
             String playerServer = player.getCurrentServer().orElseThrow().getServer().getServerInfo().getName();
 
             this.server.getAllServers().forEach(s -> {
-                if (!s.getServerInfo().getName().equals(playerServer)) {
-                    s.getPlayersConnected().forEach(p -> p.sendMessage(
-                            Component.text(this.config.getMessageFormat().formatted(playerServer, player.getUsername(), message))));
+                if (!s.getServerInfo().getName().equals(playerServer) && !this.config.getExceptServers().contains(s.getServerInfo().getName())) {
+                    s.getPlayersConnected().forEach(p -> {
+                        if (!this.config.getExceptPlayers().contains(p.getUsername())) {
+                            p.sendMessage(Component.text(this.config.getChatFormat().formatted(playerServer, player.getUsername(), message)));
+                        }
+                    });
                 }
             });
         }
@@ -45,14 +48,20 @@ public class ForwardingListener {
             Optional<RegisteredServer> from = Optional.ofNullable(e.getPreviousServer());
             String target = player.getCurrentServer().orElseThrow().getServerInfo().getName();
 
-            this.server.getAllServers().forEach(s -> s.getPlayersConnected().forEach(p -> {
-                String name = "ProxyServer";
-                if (from.isPresent()) {
-                    name = from.get().getServerInfo().getName();
-                }
+            this.server.getAllServers().forEach(s -> {
+                if (!this.config.getExceptServers().contains(s.getServerInfo().getName())) {
+                    s.getPlayersConnected().forEach(p -> {
+                        if (!this.config.getExceptPlayers().contains(p.getUsername())) {
+                            String name = "ProxyServer";
+                            if (from.isPresent()) {
+                                name = from.get().getServerInfo().getName();
+                            }
 
-                p.sendMessage(Component.text(this.config.getJoinFormat().formatted(target, player.getUsername(), name)));
-            }));
+                            p.sendMessage(Component.text(this.config.getJoinFormat().formatted(target, player.getUsername(), name)));
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -63,17 +72,23 @@ public class ForwardingListener {
             String server = e.getServer().getServerInfo().getName();
             Optional<Component> reason = e.getServerKickReason();
 
-            this.server.getAllServers().forEach(s -> s.getPlayersConnected().forEach(p -> {
-                Component component = Component.empty();
-                if (reason.isPresent()) {
-                    component = component.appendSpace()
-                            .append(Component.text("because"))
-                            .appendSpace()
-                            .append(reason.get());
-                }
+            this.server.getAllServers().forEach(s -> {
+                if (!this.config.getExceptServers().contains(s.getServerInfo().getName())) {
+                    s.getPlayersConnected().forEach(p -> {
+                        if (!this.config.getExceptPlayers().contains(p.getUsername())) {
+                            Component component = Component.empty();
+                            if (reason.isPresent()) {
+                                component = component.appendSpace()
+                                        .append(Component.text("because"))
+                                        .appendSpace()
+                                        .append(reason.get());
+                            }
 
-                p.sendMessage(Component.text(this.config.getLeaveFormat().formatted(server, player.getUsername())).append(component));
-            }));
+                            p.sendMessage(Component.text(this.config.getLeaveFormat().formatted(server, player.getUsername())).append(component));
+                        }
+                    });
+                }
+            });
         }
     }
 }
