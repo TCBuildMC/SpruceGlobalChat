@@ -17,6 +17,7 @@ import xyz.tcbuildmc.minecraft.sgchat.event.Listeners;
 import java.io.File;
 import java.nio.file.Path;
 
+@Getter
 @Plugin(
         id = "spruceglobalchat",
         name = "SpruceGlobalChat",
@@ -26,16 +27,9 @@ import java.nio.file.Path;
         authors = {"TCBuildMC", "Block_Mrlimr267"}
 )
 public class SpruceGlobalChatPlugin {
-    @Getter
     private final Logger logger;
-
-    @Getter
     private final ProxyServer server;
-
-    @Getter
     private final File pluginData;
-
-    @Getter
     private final Config config;
 
     @Inject

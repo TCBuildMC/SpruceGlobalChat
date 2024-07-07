@@ -38,9 +38,19 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build --stacktrace --no-daemon
 
+      - name: Get short SHA
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      - name: Read Properties info
+        id: prop_info
+        uses: christian-draeger/read-properties@1.1.1
+        with:
+          path: gradle.properties
+          properties: "release_version"
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: SpruceGlobalChat
+          name: SpruceGlobalChat-${{ steps.prop_info.outputs.release_version }}-${{ env.SHORT_SHA }}
           path: |
            build/libs
