@@ -29,12 +29,32 @@ public class Config implements ConfigData {
     }
 
     @Override
-    public boolean getGlobalChat() {
-        return this.config.getOrElse("globalChat", true);
+    public boolean isMessageForwarding() {
+        return this.config.getOrElse("messageForwarding", true);
     }
 
     @Override
-    public void setGlobalChat(boolean globalChat) {
-        this.config.set("globalChat", globalChat);
+    public void setMessageForwarding(boolean messageForwarding) {
+        this.config.set("messageForwarding", messageForwarding);
+    }
+
+    @Override
+    public boolean isPlayerStatusForwarding() {
+        return this.config.getOrElse("playerStatusForwarding", true);
+    }
+
+    @Override
+    public void setPlayerStatusForwarding(boolean playerStatusForwarding) {
+        this.config.set("playerStatusForwarding", playerStatusForwarding);
+    }
+
+    @Override
+    public String getMessageFormat() {
+        return this.config.getOrElse("messageFormat", "[%s]<%s> %s");
+    }
+
+    @Override
+    public void setMessageFormat(String messageFormat) {
+        this.config.set("messageFormat", messageFormat);
     }
 }

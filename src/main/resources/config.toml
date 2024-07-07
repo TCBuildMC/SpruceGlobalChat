@@ -1,1 +1,11 @@
-globalChat = true
+# Whether that the messages of all players will forward to other servers
+# 玩家消息转发
+messageForwarding = true
+
+#
+#
+playerStatusForwarding = true
+
+# The format of the forwarding messages
+# 转发消息的格式
+messageFormat = "[%s]<%s> %s"
