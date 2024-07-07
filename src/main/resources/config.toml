@@ -2,8 +2,8 @@
 # 玩家消息转发
 messageForwarding = true
 
-#
-#
+# Whether that the messages of system about players will forward to other servers
+# 玩家状态转发
 playerStatusForwarding = true
 
 # The format of the forwarding messages
