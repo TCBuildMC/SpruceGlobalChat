@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.github.TCBuildMC:CurtainGradle:1.1-hotfix.1"
+        classpath "com.github.TCBuildMC:CurtainGradle:1.1"
     }
 }
 
