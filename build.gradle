@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.github.TCBuildMC:CurtainGradle:1.0.1"
+        classpath "com.github.TCBuildMC:CurtainGradle:1.1-hotfix.1"
     }
 }
 
@@ -25,22 +25,23 @@ apply plugin: "xyz.tcbuildmc.minecraft.curtaingradle"
 
 repositories {
     curtainGradle.repositories.papermc()
+    curtainGradle.repositories.jitpack()
     mavenCentral()
 }
 
 curtainGradle {
     lang {
-        jdkVersion = 17
+        jdkVersion = 21
     }
 }
 
 dependencies {
-    annotationProcessor(compileOnly("org.projectlombok:lombok:1.18.32"))
+    annotationProcessor(compileOnly("org.projectlombok:lombok:1.18.34"))
     implementation "com.electronwill.night-config:toml:3.8.0"
 
     testImplementation platform('org.junit:junit-bom:5.10.3')
     testImplementation 'org.junit.jupiter:junit-jupiter'
-    testAnnotationProcessor(testCompileOnly("org.projectlombok:lombok:1.18.32"))
+    testAnnotationProcessor(testCompileOnly("org.projectlombok:lombok:1.18.34"))
 
     annotationProcessor(compileOnly(curtainGradle.dependencies.velocityApi("3.1.2-SNAPSHOT")))
 }
@@ -74,7 +75,7 @@ compileJava.dependsOn clean
 
 publishing {
     publications {
-        create("MavenVelocity", MavenPublication) {
+        create("MavenJava", MavenPublication) {
             from components.java
             artifactId = project.archives_base_name
         }
